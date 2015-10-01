@@ -65,7 +65,7 @@ public class Test03GetMultiproperty
 
     @SuppressWarnings("rawtypes")
     @Benchmark
-    public void testFastGetMultiproperty(TreeCacheState state)
+    public Map testFastGetMultiproperty(TreeCacheState state)
     {
         Fqn fqn = Fqn.fromElements("qwe", "1234", "zxcvbn");
         Map result = state.l3.get(fqn);
@@ -73,11 +73,12 @@ public class Test03GetMultiproperty
         {
             state.l3.put(fqn, state.treeCache.getData(fqn));
         }
+        return result;
     }
 
     @Benchmark
-    public void testGetMultiproperty(TreeCacheState state)
+    public Map testGetMultiproperty(TreeCacheState state)
     {
-        state.treeCache.getData(Fqn.fromElements("qwe", "1234", "zxcvbn"));
+        return state.treeCache.getData(Fqn.fromElements("qwe", "1234", "zxcvbn"));
     }
 }

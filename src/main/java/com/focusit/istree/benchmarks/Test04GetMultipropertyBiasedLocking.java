@@ -81,7 +81,7 @@ public class Test04GetMultipropertyBiasedLocking
     @SuppressWarnings("rawtypes")
     @Benchmark
     @Fork(jvmArgs = { "-XX:-UseBiasedLocking" }, value = NUM_FORKS)
-    public void testFastGetMultipropertyNoBiased(TreeCacheState state)
+    public Map testFastGetMultipropertyNoBiased(TreeCacheState state)
     {
         Fqn fqn = Fqn.fromElements("qwe", "1234", "zxcvbn");
         Map result = state.l3.get(fqn);
@@ -89,19 +89,21 @@ public class Test04GetMultipropertyBiasedLocking
         {
             state.l3.put(fqn, state.treeCache.getData(fqn));
         }
+        
+        return result;
     }
 
     @Benchmark
     @Fork(jvmArgs = { "-XX:BiasedLockingStartupDelay=0" }, value = NUM_FORKS)
-    public void testGetMultipropertyBiased(TreeCacheState state)
+    public Map testGetMultipropertyBiased(TreeCacheState state)
     {
-        state.treeCache.getData(Fqn.fromElements("qwe", "1234", "zxcvbn"));
+        return state.treeCache.getData(Fqn.fromElements("qwe", "1234", "zxcvbn"));
     }
 
     @Benchmark
     @Fork(jvmArgs = { "-XX:-UseBiasedLocking" }, value = NUM_FORKS)
-    public void testGetMultipropertyNoBiased(TreeCacheState state)
+    public Map testGetMultipropertyNoBiased(TreeCacheState state)
     {
-        state.treeCache.getData(Fqn.fromElements("qwe", "1234", "zxcvbn"));
+        return state.treeCache.getData(Fqn.fromElements("qwe", "1234", "zxcvbn"));
     }
 }

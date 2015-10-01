@@ -80,10 +80,10 @@ public class Test05GetMultipropertyPOJO
      * @param state
      */
     @Benchmark
-    public void testGetMultipropery(TreeCacheState state)
+    public Object testGetMultipropery(TreeCacheState state)
     {
         Fqn fqn = Fqn.fromElements("qwe", "1234", "zxcvbn1");
-        state.treeCache.getData(fqn);
+        return state.treeCache.getData(fqn);
     }
 
     /**
@@ -92,9 +92,9 @@ public class Test05GetMultipropertyPOJO
      */
     @SuppressWarnings("unchecked")
     @Benchmark
-    public void testGetPojo(TreeCacheState state)
+    public Object testGetPojo(TreeCacheState state)
     {
-        state.treeCache.get(Fqn.fromElements("qwe", "1234", "zxcvbn2"), "key");
+        return state.treeCache.get(Fqn.fromElements("qwe", "1234", "zxcvbn2"), "key");
     }
 
     /**
@@ -102,9 +102,9 @@ public class Test05GetMultipropertyPOJO
      * @param state
      */
     @Benchmark
-    public void testSimpleGet(TreeCacheState state)
+    public Object testSimpleGet(TreeCacheState state)
     {
-        state.cache.get(Fqn.fromElements("qwe", "1234", "zxcvbn3"));
+        return state.cache.get(Fqn.fromElements("qwe", "1234", "zxcvbn3"));
     }
 
     /**
@@ -112,8 +112,8 @@ public class Test05GetMultipropertyPOJO
      * @param state
      */
     @Benchmark
-    public void testSimpleMapGet(TreeCacheState state)
+    public Object testSimpleMapGet(TreeCacheState state)
     {
-        state.l3.get(Fqn.fromElements("qwe", "1234", "zxcvbn4"));
+        return state.l3.get(Fqn.fromElements("qwe", "1234", "zxcvbn4"));
     }
 }
