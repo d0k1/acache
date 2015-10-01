@@ -23,16 +23,15 @@ import org.openjdk.jmh.annotations.Threads;
 import org.openjdk.jmh.annotations.Warmup;
 
 /**
- * What is better to read from hierarchical cache directly or use some kind of L3 Cache (snapshots of hierarchical data). 
+ * What if -XX:-UseBiasedLocking may help with access to the hierarchical data in infinispan 
  * @author dkirpichenkov
  *
  */
 @BenchmarkMode(value = { Mode.Throughput })
-@Warmup(iterations = 7, time = 5, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 15, time = 5, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 5, time = 5, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 5, time = 5, timeUnit = TimeUnit.SECONDS)
 @Threads(50)
-@Fork(value = 5)
-public class Test03GetMultiproperty
+public class Test04GetMultipropertyBiasedLocking
 {
     @State(Scope.Benchmark)
     public static class TreeCacheState
@@ -60,12 +59,29 @@ public class Test03GetMultiproperty
             treeCache.start();
 
             treeCache.put(Fqn.fromElements("qwe", "1234", "zxcvbn"), new HashMap<>());
+
+        }
+    }
+
+    private final static int NUM_FORKS = 5;
+
+    @SuppressWarnings("rawtypes")
+    @Benchmark
+    @Fork(jvmArgs = { "-XX:BiasedLockingStartupDelay=0" }, value = NUM_FORKS)
+    public void testFastGetMultipropertyBiased(TreeCacheState state)
+    {
+        Fqn fqn = Fqn.fromElements("qwe", "1234", "zxcvbn");
+        Map result = state.l3.get(fqn);
+        if (result == null)
+        {
+            state.l3.put(fqn, state.treeCache.getData(fqn));
         }
     }
 
     @SuppressWarnings("rawtypes")
     @Benchmark
-    public void testFastGetMultiproperty(TreeCacheState state)
+    @Fork(jvmArgs = { "-XX:-UseBiasedLocking" }, value = NUM_FORKS)
+    public void testFastGetMultipropertyNoBiased(TreeCacheState state)
     {
         Fqn fqn = Fqn.fromElements("qwe", "1234", "zxcvbn");
         Map result = state.l3.get(fqn);
@@ -76,7 +92,15 @@ public class Test03GetMultiproperty
     }
 
     @Benchmark
-    public void testGetMultiproperty(TreeCacheState state)
+    @Fork(jvmArgs = { "-XX:BiasedLockingStartupDelay=0" }, value = NUM_FORKS)
+    public void testGetMultipropertyBiased(TreeCacheState state)
+    {
+        state.treeCache.getData(Fqn.fromElements("qwe", "1234", "zxcvbn"));
+    }
+
+    @Benchmark
+    @Fork(jvmArgs = { "-XX:-UseBiasedLocking" }, value = NUM_FORKS)
+    public void testGetMultipropertyNoBiased(TreeCacheState state)
     {
         state.treeCache.getData(Fqn.fromElements("qwe", "1234", "zxcvbn"));
     }
