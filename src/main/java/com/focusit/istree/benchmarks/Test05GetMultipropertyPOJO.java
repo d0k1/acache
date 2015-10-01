@@ -24,9 +24,9 @@ import org.openjdk.jmh.annotations.Warmup;
 
 @BenchmarkMode(value = { Mode.Throughput })
 @Warmup(iterations = 7, time = 5, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 10, time = 5, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 15, time = 5, timeUnit = TimeUnit.SECONDS)
 @Threads(50)
-@Fork(value = 1)
+@Fork(value = 5)
 public class Test05GetMultipropertyPOJO
 {
 

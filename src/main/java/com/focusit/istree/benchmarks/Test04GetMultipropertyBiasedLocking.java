@@ -28,8 +28,8 @@ import org.openjdk.jmh.annotations.Warmup;
  *
  */
 @BenchmarkMode(value = { Mode.Throughput })
-@Warmup(iterations = 5, time = 5, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 5, time = 5, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 7, time = 5, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 15, time = 5, timeUnit = TimeUnit.SECONDS)
 @Threads(50)
 public class Test04GetMultipropertyBiasedLocking
 {
