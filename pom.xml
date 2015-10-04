@@ -15,8 +15,8 @@
 		</project.reporting.outputEncoding>
 		<jmh.version>1.11.1</jmh.version>
 		<is.version>6.0.2.Final</is.version>
-<!-- 		<is.version>5.2.15.Final</is.version> -->
-<!-- 		<is.version>8.1.0.Alpha1</is.version> -->
+		<!-- <is.version>5.2.15.Final</is.version> -->
+		<!-- <is.version>8.1.0.Alpha1</is.version> -->
 		<uberjar.name>benchmarks</uberjar.name>
 	</properties>
 
@@ -72,6 +72,18 @@
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>jsr305</artifactId>
 			<version>3.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.12</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.12</version>
 		</dependency>
 	</dependencies>
 
