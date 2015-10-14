@@ -1,4 +1,4 @@
-package com.focusit.istree.benchmarks;
+package com.focusit.istree.benchmarks.simple;
 
 import java.util.concurrent.TimeUnit;
 

@@ -1,4 +1,4 @@
-package com.focusit.istree.benchmarks;
+package com.focusit.istree.benchmarks.simple;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,17 +22,14 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Threads;
 import org.openjdk.jmh.annotations.Warmup;
 
-/**
- * What if -XX:-UseBiasedLocking may help with access to the hierarchical data in infinispan 
- * @author dkirpichenkov
- *
- */
 @BenchmarkMode(value = { Mode.Throughput })
 @Warmup(iterations = 7, time = 5, timeUnit = TimeUnit.SECONDS)
 @Measurement(iterations = 15, time = 5, timeUnit = TimeUnit.SECONDS)
 @Threads(50)
-public class Test04GetMultipropertyBiasedLocking
+@Fork(value = 5)
+public class Test05GetMultipropertyPOJO
 {
+
     @State(Scope.Benchmark)
     public static class TreeCacheState
     {
@@ -42,8 +39,7 @@ public class Test04GetMultipropertyBiasedLocking
         @SuppressWarnings("rawtypes")
         private Cache cache;
 
-        @SuppressWarnings("rawtypes")
-        ConcurrentHashMap<Fqn, Map> l3 = new ConcurrentHashMap<>();
+        ConcurrentHashMap<Object, Object> l3 = new ConcurrentHashMap<>();
 
         @SuppressWarnings("unchecked")
         @Setup
@@ -58,52 +54,66 @@ public class Test04GetMultipropertyBiasedLocking
             treeCache = new TreeCacheFactory().createTreeCache(cache);
             treeCache.start();
 
-            treeCache.put(Fqn.fromElements("qwe", "1234", "zxcvbn"), new HashMap<>());
+            // The data to be read
+            Object data = new Object();
 
+            // A complex object
+            Map<String, Object> data1 = new HashMap<>();
+            // with a single property
+            data1.put("key", data);
+            // let it be in the tree cache
+            treeCache.put(Fqn.fromElements("qwe", "1234", "zxcvbn1"), data1);
+
+            // try to use direct access method into the tree data
+            treeCache.put(Fqn.fromElements("qwe", "1234", "zxcvbn2"), "key", data);
+
+            // bare infinispan cache access 
+            cache.put(Fqn.fromElements("qwe", "1234", "zxcvbn3"), data);
+
+            // dead simple ConcurrentHashMap access 
+            l3.put(Fqn.fromElements("qwe", "1234", "zxcvbn4"), data);
         }
     }
 
-    private final static int NUM_FORKS = 5;
-
-    @SuppressWarnings("rawtypes")
+    /**
+     * Reading a comple object from hierarchical cache
+     * @param state
+     */
     @Benchmark
-    @Fork(jvmArgs = { "-XX:BiasedLockingStartupDelay=0" }, value = NUM_FORKS)
-    public void testFastGetMultipropertyBiased(TreeCacheState state)
+    public Object testGetMultipropery(TreeCacheState state)
     {
-        Fqn fqn = Fqn.fromElements("qwe", "1234", "zxcvbn");
-        Map result = state.l3.get(fqn);
-        if (result == null)
-        {
-            state.l3.put(fqn, state.treeCache.getData(fqn));
-        }
+        Fqn fqn = Fqn.fromElements("qwe", "1234", "zxcvbn1");
+        return state.treeCache.getData(fqn);
     }
 
-    @SuppressWarnings("rawtypes")
+    /**
+     * Reading simple value from a hierarchical cache
+     * @param state
+     */
+    @SuppressWarnings("unchecked")
     @Benchmark
-    @Fork(jvmArgs = { "-XX:-UseBiasedLocking" }, value = NUM_FORKS)
-    public Map testFastGetMultipropertyNoBiased(TreeCacheState state)
+    public Object testGetPojo(TreeCacheState state)
     {
-        Fqn fqn = Fqn.fromElements("qwe", "1234", "zxcvbn");
-        Map result = state.l3.get(fqn);
-        if (result == null)
-        {
-            state.l3.put(fqn, state.treeCache.getData(fqn));
-        }
-        
-        return result;
+        return state.treeCache.get(Fqn.fromElements("qwe", "1234", "zxcvbn2"), "key");
     }
 
+    /**
+     * Reading simple value from bare infinispan cache
+     * @param state
+     */
     @Benchmark
-    @Fork(jvmArgs = { "-XX:BiasedLockingStartupDelay=0" }, value = NUM_FORKS)
-    public Map testGetMultipropertyBiased(TreeCacheState state)
+    public Object testSimpleGet(TreeCacheState state)
     {
-        return state.treeCache.getData(Fqn.fromElements("qwe", "1234", "zxcvbn"));
+        return state.cache.get(Fqn.fromElements("qwe", "1234", "zxcvbn3"));
     }
 
+    /**
+     * Reading from dead simple hash map
+     * @param state
+     */
     @Benchmark
-    @Fork(jvmArgs = { "-XX:-UseBiasedLocking" }, value = NUM_FORKS)
-    public Map testGetMultipropertyNoBiased(TreeCacheState state)
+    public Object testSimpleMapGet(TreeCacheState state)
     {
-        return state.treeCache.getData(Fqn.fromElements("qwe", "1234", "zxcvbn"));
+        return state.l3.get(Fqn.fromElements("qwe", "1234", "zxcvbn4"));
     }
 }

@@ -1,5 +1,8 @@
-package com.focusit.istree.benchmarks;
+package com.focusit.istree.benchmarks.simple;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import org.infinispan.Cache;
@@ -13,20 +16,23 @@ import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Threads;
 import org.openjdk.jmh.annotations.Warmup;
 
-import com.focusit.istree.tree.FastFqn;
-
-@BenchmarkMode(value = { Mode.AverageTime})
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
-@Warmup(iterations = 3, time = 1, timeUnit = TimeUnit.SECONDS )
-@Measurement(iterations = 5, time = 2, timeUnit = TimeUnit.SECONDS)
-@Threads( 2 )
-public class Test02CompareTo
+/**
+ * What is better to read from hierarchical cache directly or use some kind of L3 Cache (snapshots of hierarchical data). 
+ * @author dkirpichenkov
+ *
+ */
+@BenchmarkMode(value = { Mode.Throughput })
+@Warmup(iterations = 7, time = 5, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 15, time = 5, timeUnit = TimeUnit.SECONDS)
+@Threads(50)
+@Fork(value = 5)
+public class Test03GetMultiproperty
 {
     @State(Scope.Benchmark)
     public static class TreeCacheState
@@ -37,14 +43,12 @@ public class Test02CompareTo
         @SuppressWarnings("rawtypes")
         private Cache cache;
 
-        Fqn fqn1;
-        Fqn fqn2;
-
-        FastFqn fqn11;
-        FastFqn fqn22;
+        @SuppressWarnings("rawtypes")
+        ConcurrentHashMap<Fqn, Map> l3 = new ConcurrentHashMap<>();
 
         @SuppressWarnings("unchecked")
-        public TreeCacheState()
+        @Setup
+        public void setup()
         {
             ConfigurationBuilder builder = new ConfigurationBuilder();
             builder.jmxStatistics().disable();
@@ -55,23 +59,26 @@ public class Test02CompareTo
             treeCache = new TreeCacheFactory().createTreeCache(cache);
             treeCache.start();
 
-            fqn1 = Fqn.fromElements("123", "456");
-            fqn2 = Fqn.fromElements("123", "456", "789");
-
-            fqn11 = FastFqn.fromElements("123", "456");
-            fqn22 = FastFqn.fromElements("123", "456", "789");
+            treeCache.put(Fqn.fromElements("qwe", "1234", "zxcvbn"), new HashMap<>());
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @Benchmark
-    public void testFastFqnCompareTo(TreeCacheState state)
+    public Map testFastGetMultiproperty(TreeCacheState state)
     {
-        state.fqn11.compareTo(state.fqn22);
+        Fqn fqn = Fqn.fromElements("qwe", "1234", "zxcvbn");
+        Map result = state.l3.get(fqn);
+        if (result == null)
+        {
+            state.l3.put(fqn, state.treeCache.getData(fqn));
+        }
+        return result;
     }
 
     @Benchmark
-    public void testFqnCompareTo(TreeCacheState state)
+    public Map testGetMultiproperty(TreeCacheState state)
     {
-        state.fqn1.compareTo(state.fqn2);
+        return state.treeCache.getData(Fqn.fromElements("qwe", "1234", "zxcvbn"));
     }
 }
