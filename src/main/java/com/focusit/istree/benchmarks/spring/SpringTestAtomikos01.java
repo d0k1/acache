@@ -30,11 +30,12 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.focusit.istree.benchmarks.spring.config.CacheTestConfigAtomikos;
 import com.focusit.istree.benchmarks.spring.config.CacheTestConfigJBossTA;
 
 @BenchmarkMode(value = { Mode.Throughput})
 //@OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class SpringTest01 {
+public class SpringTestAtomikos01 {
 
 	@State(Scope.Benchmark)
 	public static class SpringState {
@@ -49,7 +50,7 @@ public class SpringTest01 {
         public int iteration;
 
 		public SpringState() {
-			ctx = new AnnotationConfigApplicationContext(CacheTestConfigJBossTA.class);
+			ctx = new AnnotationConfigApplicationContext(CacheTestConfigAtomikos.class);
 			GlobalConfigurationBuilder global = new GlobalConfigurationBuilder();
 			global.globalJmxStatistics().allowDuplicateDomains(true);
             ConfigurationBuilder builder = new ConfigurationBuilder();

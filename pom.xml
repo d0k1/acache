@@ -134,6 +134,18 @@
 			<artifactId>jcip-annotations</artifactId>
 			<version>1.0-1</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.atomikos</groupId>
+			<artifactId>transactions</artifactId>
+			<version>4.0.0M4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.atomikos</groupId>
+			<artifactId>transactions-jta</artifactId>
+			<version>4.0.0M4</version>
+		</dependency>
 	</dependencies>
 
 	<build>
