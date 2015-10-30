@@ -1,15 +1,33 @@
-package com.focusit.istree.hotcache;
+package com.focusit.istree.hotcache.snapshot;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 
 import com.google.common.util.concurrent.Striped;
 
+/**
+ * Simple and naive cache implementation. May be used to make something like l3 cache to increase throughput.
+ * Doesn't support any kind of transactions.
+ * 
+ * @author Denis V. Kirpichenkov
+ *
+ * @param <K> key type
+ * @param <V> value type
+ */
 public class LazySnapshotCache<K, V> {
 	public static interface Loader<K, V> {
 		V load(K key);
+	}
+	
+	public static interface Builder<K, V>{
+		void build(BuilderStorage<K, V> storage);
+	}
+	
+	public static interface BuilderStorage<K, V> {
+		void put(K key, V value);
 	}
 
 	private final static Object NO_OBJECT = new Object();
@@ -19,9 +37,23 @@ public class LazySnapshotCache<K, V> {
 
 	private final AtomicReference<ConcurrentMap<K, Object>> storageRef = new AtomicReference<>(
 			new ConcurrentHashMap<>());
-
+	
+	private final AtomicBoolean ready = new AtomicBoolean(false);
+	
+	private Builder<K, V> builder = null;
+	
 	public void build() {
-
+		if(builder!=null){
+			ConcurrentMap<K, Object> storage = storageRef.get();
+			builder.build(new BuilderStorage<K, V>() {
+				
+				@Override
+				public void put(K key, V value) {
+					storage.put(key, value);
+				}
+			});
+		}
+		ready.set(true);
 	}
 
 	@SuppressWarnings("unchecked")

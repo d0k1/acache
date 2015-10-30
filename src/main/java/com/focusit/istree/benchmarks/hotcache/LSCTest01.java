@@ -14,8 +14,8 @@ import org.openjdk.jmh.annotations.Threads;
 import org.openjdk.jmh.annotations.Warmup;
 import org.openjdk.jmh.infra.Blackhole;
 
-import com.focusit.istree.hotcache.LazySnapshotCache;
-import com.focusit.istree.hotcache.LazySnapshotCache.Loader;
+import com.focusit.istree.hotcache.snapshot.LazySnapshotCache;
+import com.focusit.istree.hotcache.snapshot.LazySnapshotCache.Loader;
 
 @Threads( 100 )
 public class LSCTest01 {

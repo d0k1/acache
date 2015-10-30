@@ -17,7 +17,7 @@
 		<is.version>6.0.2.Final</is.version>
 		<org.springframework.version>4.2.1.RELEASE</org.springframework.version>
 		<!-- <is.version>5.2.15.Final</is.version> -->
-<!-- 		<is.version>8.1.0.Alpha2</is.version> -->
+		<!-- <is.version>8.1.0.Alpha2</is.version> -->
 		<uberjar.name>benchmarks</uberjar.name>
 	</properties>
 
@@ -145,6 +145,12 @@
 			<groupId>com.atomikos</groupId>
 			<artifactId>transactions-jta</artifactId>
 			<version>4.0.0M4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.esotericsoftware.kryo</groupId>
+			<artifactId>kryo</artifactId>
+			<version>2.24.0</version>
 		</dependency>
 	</dependencies>
 
