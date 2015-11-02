@@ -30,7 +30,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.focusit.istree.benchmarks.spring.config.CacheTestConfigJBossTA;
+import com.focusit.istree.examples.spring.config.CacheTestConfigJBossTA;
 
 @BenchmarkMode(value = { Mode.Throughput})
 //@OutputTimeUnit(TimeUnit.NANOSECONDS)

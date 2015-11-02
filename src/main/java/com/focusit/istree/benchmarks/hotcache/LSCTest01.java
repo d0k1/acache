@@ -22,7 +22,7 @@ public class LSCTest01 {
     @State(Scope.Benchmark)
     public static class LSCState
     {
-    	LazySnapshotCache<String, String> cache = new LazySnapshotCache<>();
+    	LazySnapshotCache<String, String> cache = new LazySnapshotCache<>(null);
     	public int position = 0;
     	public LSCState() {
     		cache.setLoader(new Loader<String, String>() {

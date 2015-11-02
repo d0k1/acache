@@ -31,7 +31,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.focusit.istree.benchmarks.spring.config.CacheTestConfigAtomikos;
+import com.focusit.istree.examples.spring.config.CacheTestConfigAtomikos;
 
 @BenchmarkMode(value = { Mode.Throughput })
 // @OutputTimeUnit(TimeUnit.NANOSECONDS)

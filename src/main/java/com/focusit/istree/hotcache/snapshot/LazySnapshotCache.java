@@ -40,8 +40,16 @@ public class LazySnapshotCache<K, V> {
 	
 	private final AtomicBoolean ready = new AtomicBoolean(false);
 	
-	private Builder<K, V> builder = null;
+	private final Builder<K, V> builder;
 	
+	public LazySnapshotCache(Builder<K, V> builder) {
+		this.builder = builder;
+	}
+
+	public LazySnapshotCache() {
+		this.builder = null;
+	}
+
 	public void build() {
 		if(builder!=null){
 			ConcurrentMap<K, Object> storage = storageRef.get();
@@ -54,7 +62,7 @@ public class LazySnapshotCache<K, V> {
 			});
 		}
 		ready.set(true);
-	}
+	}	
 
 	@SuppressWarnings("unchecked")
 	public V get(K key) {
