@@ -3,8 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.focusit</groupId>
 	<artifactId>acache</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	<description>JMH based optimization on hierarchical data in infinispan</description>
+	<version>0.1</version>
+	<description>Simple cache based on infinispan codebase</description>
 
 	<properties>
 		<project.build.sourceEncoding>
