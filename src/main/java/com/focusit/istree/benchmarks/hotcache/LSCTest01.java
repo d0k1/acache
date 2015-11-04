@@ -14,15 +14,15 @@ import org.openjdk.jmh.annotations.Threads;
 import org.openjdk.jmh.annotations.Warmup;
 import org.openjdk.jmh.infra.Blackhole;
 
-import com.focusit.istree.hotcache.snapshot.LazySnapshotCache;
-import com.focusit.istree.hotcache.snapshot.LazySnapshotCache.Loader;
+import com.focusit.istree.hotcache.dummy.LazyCache;
+import com.focusit.istree.hotcache.dummy.LazyCache.Loader;
 
 @Threads( 100 )
 public class LSCTest01 {
     @State(Scope.Benchmark)
     public static class LSCState
     {
-    	LazySnapshotCache<String, String> cache = new LazySnapshotCache<>(null);
+    	LazyCache<String, String> cache = new LazyCache<>(null);
     	public int position = 0;
     	public LSCState() {
     		cache.setLoader(new Loader<String, String>() {

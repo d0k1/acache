@@ -42,35 +42,6 @@ public interface EntryFactory {
    CacheEntry wrapEntryForReading(InvocationContext ctx, Object key, CacheEntry existing);
 
    /**
-    * Used for wrapping individual keys when clearing the cache. The wrapped entry is added to the
-    * supplied InvocationContext.
-    * @deprecated Clear no longer wraps entries.
-    */
-   @Deprecated
-   MVCCEntry wrapEntryForClear(InvocationContext ctx, Object key) throws InterruptedException;
-
-   /**
-    * Used for wrapping a cache entry for replacement. The wrapped entry is added to the
-    * supplied InvocationContext.
-    * @deprecated Since 8.1, use
-    * {@link #wrapEntryForWriting(InvocationContext, Object, Wrap, boolean, boolean)} instead.
-    */
-   @Deprecated
-   MVCCEntry wrapEntryForReplace(InvocationContext ctx, ReplaceCommand cmd) throws InterruptedException;
-
-   /**
-    * Used for wrapping a cache entry for removal. The wrapped entry is added to the supplied InvocationContext.
-    *
-    * @param skipRead if {@code true}, if the key is not read during the remove operation. Only used with Repeatable
-    *                 Read + Write Skew + Versioning + Cluster.
-    * @deprecated Since 8.1, use
-    * {@link #wrapEntryForWriting(InvocationContext, Object, Wrap, boolean, boolean)} instead.
-    */
-   @Deprecated
-   MVCCEntry wrapEntryForRemove(InvocationContext ctx, Object key, boolean skipRead, boolean forInvalidation,
-                                boolean forceWrap) throws InterruptedException;
-   
-   /**
     * Used for wrapping Delta entry to be applied to DeltaAware object stored in cache. The wrapped
     * entry is added to the supplied InvocationContext.
     */

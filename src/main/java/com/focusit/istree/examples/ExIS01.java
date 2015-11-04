@@ -18,7 +18,6 @@ public class ExIS01 {
 		GlobalConfigurationBuilder global = new GlobalConfigurationBuilder();
 		global.globalJmxStatistics().allowDuplicateDomains(true);
         ConfigurationBuilder builder = new ConfigurationBuilder();
-//        builder.invocationBatching().enable();
         builder.jmxStatistics().disable();
 
         DefaultCacheManager manager = new DefaultCacheManager(global.build(), builder.build());            

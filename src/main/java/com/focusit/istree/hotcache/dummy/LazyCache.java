@@ -1,4 +1,4 @@
-package com.focusit.istree.hotcache.snapshot;
+package com.focusit.istree.hotcache.dummy;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -17,7 +17,7 @@ import com.google.common.util.concurrent.Striped;
  * @param <K> key type
  * @param <V> value type
  */
-public class LazySnapshotCache<K, V> {
+public class LazyCache<K, V> {
 	public static interface Loader<K, V> {
 		V load(K key);
 	}
@@ -42,11 +42,11 @@ public class LazySnapshotCache<K, V> {
 	
 	private final Builder<K, V> builder;
 	
-	public LazySnapshotCache(Builder<K, V> builder) {
+	public LazyCache(Builder<K, V> builder) {
 		this.builder = builder;
 	}
 
-	public LazySnapshotCache() {
+	public LazyCache() {
 		this.builder = null;
 	}
 
