@@ -6,9 +6,9 @@ import com.focusit.acache.core.configuration.region.transaction.TransactionConfi
 
 public class RegionConfiguration {
 	private final String name;
-	private final BoundsConfiguration bounds = new BoundsConfiguration();
-	private final LockingConfiguration locking = new LockingConfiguration();
-	private final TransactionConfiguration transactions = new TransactionConfiguration();
+	private final BoundsConfiguration bounds = new BoundsConfiguration(this);
+	private final LockingConfiguration locking = new LockingConfiguration(this);
+	private final TransactionConfiguration transactions = new TransactionConfiguration(this);
 
 	public RegionConfiguration(String name) {
 		this.name = name;
@@ -18,15 +18,15 @@ public class RegionConfiguration {
 		return name;
 	}
 
-	public BoundsConfiguration getBounds() {
+	public BoundsConfiguration bounds() {
 		return bounds;
 	}
 
-	public LockingConfiguration getLocking() {
+	public LockingConfiguration locking() {
 		return locking;
 	}
 
-	public TransactionConfiguration getTransactions() {
+	public TransactionConfiguration transactions() {
 		return transactions;
 	}
 

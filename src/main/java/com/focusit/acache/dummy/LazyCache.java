@@ -31,7 +31,7 @@ public class LazyCache<K, V> {
 	}
 
 	private final static Object NO_OBJECT = new Object();
-	private final static Striped<Lock> locks = Striped.lock(32);
+	private final Striped<Lock> locks;
 
 	private final AtomicReference<Loader<K, V>> loaderRef = new AtomicReference<>();
 
@@ -42,12 +42,18 @@ public class LazyCache<K, V> {
 	
 	private final Builder<K, V> builder;
 	
+	public LazyCache(Builder<K, V> builder, int strippedCount) {
+		this.builder = builder;
+		locks = Striped.lock(strippedCount);
+	}
+	
 	public LazyCache(Builder<K, V> builder) {
 		this.builder = builder;
+		locks = Striped.lock(32);
 	}
 
 	public LazyCache() {
-		this.builder = null;
+		this(null);
 	}
 
 	public void build() {
