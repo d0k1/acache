@@ -1,7 +1,7 @@
 package com.focusit.acache.core.commands.write;
 
-import com.focusit.acache.core.container.entries.MVCCEntry;
-import com.focusit.acache.core.equivalence.Equivalence;
+import com.focusit.acache.container.entries.MVCCEntry;
+import com.focusit.acache.equivalence.Equivalence;
 
 /**
  * A policy for determining if a write command should be executed based on the

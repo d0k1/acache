@@ -18,20 +18,20 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.focusit.acache.container.entries.CacheEntry;
+import com.focusit.acache.container.versioning.EntryVersion;
+import com.focusit.acache.container.versioning.EntryVersionsMap;
+import com.focusit.acache.container.versioning.IncrementableEntryVersion;
+import com.focusit.acache.context.Flag;
 import com.focusit.acache.core.commands.write.WriteCommand;
-import com.focusit.acache.core.container.entries.CacheEntry;
-import com.focusit.acache.core.container.versioning.EntryVersion;
-import com.focusit.acache.core.container.versioning.EntryVersionsMap;
-import com.focusit.acache.core.container.versioning.IncrementableEntryVersion;
-import com.focusit.acache.core.context.Flag;
-import com.focusit.acache.core.equivalence.Equivalence;
 import com.focusit.acache.core.transaction.xa.CacheTransaction;
 import com.focusit.acache.core.transaction.xa.GlobalTransaction;
-import com.focusit.acache.core.util.CollectionFactory;
-import com.focusit.acache.core.util.ImmutableListCopy;
-import com.focusit.acache.core.util.Immutables;
-import com.focusit.acache.core.util.InfinispanCollections;
-import com.focusit.acache.core.util.Util;
+import com.focusit.acache.equivalence.Equivalence;
+import com.focusit.acache.util.CollectionFactory;
+import com.focusit.acache.util.ImmutableListCopy;
+import com.focusit.acache.util.Immutables;
+import com.focusit.acache.util.InfinispanCollections;
+import com.focusit.acache.util.Util;
 
 //import static org.infinispan.commons.util.Util.toStr;
 

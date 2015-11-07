@@ -3,7 +3,7 @@ package com.focusit.acache.core.transaction.tm;
 import javax.transaction.xa.Xid;
 
 import com.focusit.acache.core.io.UnsignedNumeric;
-import com.focusit.acache.core.util.Util;
+import com.focusit.acache.util.Util;
 
 import java.util.Arrays;
 import java.util.UUID;

@@ -5,17 +5,17 @@ import javax.transaction.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.focusit.acache.container.entries.CacheEntry;
+import com.focusit.acache.context.Flag;
 import com.focusit.acache.core.CacheException;
 import com.focusit.acache.core.commands.write.ClearCommand;
 import com.focusit.acache.core.commands.write.WriteCommand;
-import com.focusit.acache.core.container.entries.CacheEntry;
-import com.focusit.acache.core.context.Flag;
-import com.focusit.acache.core.equivalence.AnyEquivalence;
-import com.focusit.acache.core.equivalence.Equivalence;
 import com.focusit.acache.core.remoting.transport.Address;
 import com.focusit.acache.core.transaction.xa.GlobalTransaction;
-import com.focusit.acache.core.util.CollectionFactory;
-import com.focusit.acache.core.util.InfinispanCollections;
+import com.focusit.acache.equivalence.AnyEquivalence;
+import com.focusit.acache.equivalence.Equivalence;
+import com.focusit.acache.util.CollectionFactory;
+import com.focusit.acache.util.InfinispanCollections;
 
 import java.util.Collection;
 import java.util.Collections;

@@ -2,7 +2,7 @@ package com.focusit.acache.core.commands;
 
 import java.util.Set;
 
-import com.focusit.acache.core.context.Flag;
+import com.focusit.acache.context.Flag;
 
 /**
  * Base class for those local commands that can carry flags.

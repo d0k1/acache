@@ -1,6 +1,6 @@
 package com.focusit.acache.core.commands;
 
-import com.focusit.acache.core.metadata.Metadata;
+import com.focusit.acache.metadata.Metadata;
 
 /**
  * Base class for those commands that can carry flags.

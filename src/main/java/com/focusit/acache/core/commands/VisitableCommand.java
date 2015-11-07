@@ -1,6 +1,6 @@
 package com.focusit.acache.core.commands;
 
-import com.focusit.acache.core.context.InvocationContext;
+import com.focusit.acache.context.InvocationContext;
 import com.focusit.acache.core.lifecycle.ComponentStatus;
 
 /**

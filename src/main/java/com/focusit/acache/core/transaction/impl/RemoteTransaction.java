@@ -8,15 +8,15 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.focusit.acache.container.entries.CacheEntry;
+import com.focusit.acache.context.Flag;
 import com.focusit.acache.core.commands.write.WriteCommand;
-import com.focusit.acache.core.container.entries.CacheEntry;
-import com.focusit.acache.core.context.Flag;
-import com.focusit.acache.core.equivalence.AnyEquivalence;
-import com.focusit.acache.core.equivalence.Equivalence;
 import com.focusit.acache.core.transaction.xa.GlobalTransaction;
 import com.focusit.acache.core.transaction.xa.InvalidTransactionException;
-import com.focusit.acache.core.util.CollectionFactory;
-import com.focusit.acache.core.util.InfinispanCollections;
+import com.focusit.acache.equivalence.AnyEquivalence;
+import com.focusit.acache.equivalence.Equivalence;
+import com.focusit.acache.util.CollectionFactory;
+import com.focusit.acache.util.InfinispanCollections;
 
 /**
  * Defines the state of a remotely originated transaction.

@@ -2,15 +2,15 @@ package com.focusit.acache.core.commands.write;
 
 import java.util.Set;
 
+import com.focusit.acache.container.DataContainer;
+import com.focusit.acache.container.entries.CacheEntry;
+import com.focusit.acache.context.Flag;
+import com.focusit.acache.context.InvocationContext;
 import com.focusit.acache.core.commands.AbstractFlagAffectedCommand;
 import com.focusit.acache.core.commands.Visitor;
-import com.focusit.acache.core.container.DataContainer;
-import com.focusit.acache.core.container.entries.CacheEntry;
-import com.focusit.acache.core.context.Flag;
-import com.focusit.acache.core.context.InvocationContext;
 import com.focusit.acache.core.lifecycle.ComponentStatus;
 import com.focusit.acache.core.notifications.cachelistener.CacheNotifier;
-import com.focusit.acache.core.util.InfinispanCollections;
+import com.focusit.acache.util.InfinispanCollections;
 
 /**
  * @author Mircea.Markus@jboss.com

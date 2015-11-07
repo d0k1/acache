@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.focusit.acache.core.transaction.totalorder.TotalOrderLatch;
 import com.focusit.acache.core.transaction.xa.GlobalTransaction;
-import com.focusit.acache.core.util.InfinispanCollections;
+import com.focusit.acache.util.InfinispanCollections;
 
 /**
  * Represents a state for a Remote Transaction when the Total Order based protocol is used.

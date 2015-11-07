@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import com.focusit.acache.core.hash.Hash;
 import com.focusit.acache.core.remoting.transport.Address;
+import com.focusit.acache.hash.Hash;
 
 /**
  * A consistent hash algorithm implementation. Implementations would typically

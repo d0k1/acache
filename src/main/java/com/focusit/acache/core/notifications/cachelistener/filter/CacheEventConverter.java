@@ -1,6 +1,6 @@
 package com.focusit.acache.core.notifications.cachelistener.filter;
 
-import com.focusit.acache.core.metadata.Metadata;
+import com.focusit.acache.metadata.Metadata;
 
 /**
  * A converter that can be used to convert the value given for an event.  This converter allows for converting based

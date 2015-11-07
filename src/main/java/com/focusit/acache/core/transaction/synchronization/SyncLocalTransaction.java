@@ -2,9 +2,9 @@ package com.focusit.acache.core.transaction.synchronization;
 
 import javax.transaction.Transaction;
 
-import com.focusit.acache.core.equivalence.Equivalence;
 import com.focusit.acache.core.transaction.impl.LocalTransaction;
 import com.focusit.acache.core.transaction.xa.GlobalTransaction;
+import com.focusit.acache.equivalence.Equivalence;
 
 /**
  * {@link LocalTransaction} implementation to be used with {@link SynchronizationAdapter}.

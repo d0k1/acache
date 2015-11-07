@@ -1,7 +1,7 @@
 package com.focusit.acache.core.commands.write;
 
 import com.focusit.acache.core.commands.MetadataAwareCommand;
-import com.focusit.acache.core.metadata.Metadata;
+import com.focusit.acache.metadata.Metadata;
 
 /**
  * @author Mircea.Markus@jboss.com

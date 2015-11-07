@@ -1,5 +1,7 @@
 package com.focusit.acache.core;
 
+import com.focusit.acache.Cache;
+
 /**
  * Thrown when operations on {@link Cache} fail unexpectedly.
  * <p/>

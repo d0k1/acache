@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.focusit.acache.container.entries.CacheEntry;
+import com.focusit.acache.container.versioning.EntryVersion;
+import com.focusit.acache.container.versioning.EntryVersionsMap;
 import com.focusit.acache.core.commands.write.WriteCommand;
-import com.focusit.acache.core.container.entries.CacheEntry;
-import com.focusit.acache.core.container.versioning.EntryVersion;
-import com.focusit.acache.core.container.versioning.EntryVersionsMap;
 
 /**
  * Defines the state a infinispan transaction should have.

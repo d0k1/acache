@@ -1,6 +1,6 @@
 package com.focusit.acache.core.filter;
 
-import com.focusit.acache.core.metadata.Metadata;
+import com.focusit.acache.metadata.Metadata;
 
 import net.jcip.annotations.ThreadSafe;
 

@@ -5,13 +5,13 @@ import org.infinispan.notifications.ClassLoaderAwareListenable;
 import org.infinispan.topology.CacheTopology;
 import org.infinispan.transaction.xa.GlobalTransaction;
 
+import com.focusit.acache.container.entries.InternalCacheEntry;
+import com.focusit.acache.context.InvocationContext;
 import com.focusit.acache.core.commands.FlagAffectedCommand;
-import com.focusit.acache.core.container.entries.InternalCacheEntry;
-import com.focusit.acache.core.context.InvocationContext;
 import com.focusit.acache.core.distribution.ch.ConsistentHash;
-import com.focusit.acache.core.metadata.Metadata;
 import com.focusit.acache.core.notifications.ClassLoaderAwareFilteringListenable;
 import com.focusit.acache.core.partitionhandling.AvailabilityMode;
+import com.focusit.acache.metadata.Metadata;
 
 import java.util.Collection;
 
