@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.Map.Entry;
 
 import com.focusit.acache.container.entries.InternalCacheEntry;
 import com.focusit.acache.core.filter.KeyFilter;
@@ -35,6 +34,11 @@ public class DefaultDataContainer<K, V> implements DataContainer<K, V> {
 		entries = CollectionFactory.makeConcurrentParallelMap(128, concurrencyLevel);
 	}
 
+	public void inject(TimeService timeService, InternalEntryFactory entryFactory) {
+		this.timeService = timeService;
+		this.entryFactory = entryFactory;
+	}
+	
 	@Override
 	public InternalCacheEntry<K, V> get(Object k) {
 		InternalCacheEntry<K, V> e = entries.get(k);
@@ -62,7 +66,6 @@ public class DefaultDataContainer<K, V> implements DataContainer<K, V> {
 
 	@Override
 	public void put(K k, V v, Metadata metadata) {
-		boolean l1Entry = false;
 		InternalCacheEntry<K, V> e = entries.get(k);
 
 		if (trace) {
@@ -70,9 +73,7 @@ public class DefaultDataContainer<K, V> implements DataContainer<K, V> {
 					v));
 		}
 		final InternalCacheEntry<K, V> copy;
-		if (l1Entry) {
-			copy = entryFactory.createL1(k, v, metadata);
-		} else if (e != null) {
+		if (e != null) {
 			copy = entryFactory.update(e, v, metadata);
 		} else {
 			// this is a brand-new entry

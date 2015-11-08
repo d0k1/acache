@@ -2,7 +2,7 @@ package com.focusit.acache.commands;
 
 import com.focusit.acache.context.InvocationContext;
 
-public interface VisitableCommand {
+public interface VisitableCommand extends Command {
 	/**
 	 * Accept a visitor, and return the result of accepting this visitor.
 	 *

@@ -1,5 +1,8 @@
 package com.focusit.acache.commands;
 
+import com.focusit.acache.commands.read.GetKeyValueCommand;
+import com.focusit.acache.commands.read.SizeCommand;
+import com.focusit.acache.commands.write.PutKeyValueCommand;
 import com.focusit.acache.context.InvocationContext;
 
 public class AbstractVisitor implements Visitor {
