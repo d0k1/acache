@@ -52,7 +52,7 @@ public class LockingEx01 {
 			@Override
 			public void run() {
 				try {
-					KeyAwareLockPromise lock = manager.lock("1", owner1, 10, TimeUnit.SECONDS);
+					KeyAwareLockPromise lock = manager.lock("1", owner1, 100, TimeUnit.SECONDS);
 					lock.lock();
 				} catch (TimeoutException | InterruptedException e) {
 					e.printStackTrace();

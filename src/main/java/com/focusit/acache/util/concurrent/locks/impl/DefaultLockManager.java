@@ -105,6 +105,7 @@ public class DefaultLockManager implements LockManager {
 		return compositeLockPromise.scheduleLockTimeoutTask(scheduler, time, unit);
 	}
 
+	@SuppressWarnings("unchecked")
 	private Set<Object> filterDistinctKeys(Collection<?> collection) {
 		if (collection instanceof Set) {
 			// noinspection unchecked

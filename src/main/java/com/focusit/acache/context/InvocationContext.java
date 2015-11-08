@@ -42,19 +42,6 @@ public interface InvocationContext extends EntryLookup, Cloneable {
    void clearLockedKeys();
 
    /**
-    * Returns the class loader associated with this invocation
-    *
-    * @return a class loader instance or null if no class loader was
-    *         specifically associated
-    */
-   ClassLoader getClassLoader();
-
-   /**
-    * Sets the class loader associated for this invocation
-    */
-   void setClassLoader(ClassLoader classLoader);
-
-   /**
     * Tracks the given key as locked by this invocation context.
     */
    void addLockedKey(Object key);
