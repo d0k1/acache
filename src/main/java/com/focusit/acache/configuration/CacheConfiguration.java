@@ -3,22 +3,20 @@ package com.focusit.acache.configuration;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import com.focusit.acache.configuration.region.RegionConfiguration;
-import com.focusit.acache.util.DefaultTimeService;
-import com.focusit.acache.util.TimeService;
+import com.focusit.acache.registry.CacheRegistry;
+import com.focusit.acache.registry.RegionRegistry;
 
 public class CacheConfiguration {
 
 	private final static CacheConfiguration configuration = new CacheConfiguration();
 
 	private final Map<String, RegionConfiguration> regions = new ConcurrentHashMap<>();
-
+	
 	private String instanceName = new String();
 	
-	public static CacheConfiguration configuration() {
+	public static CacheConfiguration get() {
 		return configuration;
 	}
 
@@ -44,5 +42,11 @@ public class CacheConfiguration {
 
 	public void setInstanceName(String instanceName) {
 		this.instanceName = instanceName;
+	}
+	
+	public void buildRegions(){
+		for(RegionConfiguration region:regions.values()){
+			CacheRegistry.get().addRegion(region.getName(), new RegionRegistry(region));
+		}
 	}
 }

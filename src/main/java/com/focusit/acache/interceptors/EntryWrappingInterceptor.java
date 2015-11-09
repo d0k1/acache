@@ -1,5 +1,5 @@
 package com.focusit.acache.interceptors;
 
-public class EntryWrappingInterceptor {
+public class EntryWrappingInterceptor extends CommandInterceptor {
 
 }

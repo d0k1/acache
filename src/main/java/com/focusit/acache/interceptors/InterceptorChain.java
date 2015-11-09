@@ -34,7 +34,7 @@ public class InterceptorChain {
 
 	final ReentrantLock lock = new ReentrantLock();
 
-	   private void validateCustomInterceptor(Class<? extends CommandInterceptor> i) {
+	private void validateCustomInterceptor(Class<? extends CommandInterceptor> i) {
 		// if ((!ReflectionUtil.getAllMethodsShallow(i, Inject.class).isEmpty()
 		// ||
 		// !ReflectionUtil.getAllMethodsShallow(i, Start.class).isEmpty() ||
@@ -42,17 +42,20 @@ public class InterceptorChain {
 		// componentMetadataRepo.findComponentMetadata(i.getName()) == null) {
 		// log.customInterceptorExpectsInjection(i.getName());
 		// }
-		   }
-		   
-		   /**
-		    * Ensures that the interceptor of type passed in isn't already added
-		    *
-		    * @param clazz type of interceptor to check for
-		    */
-		   private void assertNotAdded(Class<? extends CommandInterceptor> clazz) {
-		      if (containsInterceptorType(clazz))
-		         throw new CacheConfigurationException("Detected interceptor of type [" + clazz.getName() + "] being added to the interceptor chain " + System.identityHashCode(this) + " more than once!");
-		   }
+	}
+
+	/**
+	 * Ensures that the interceptor of type passed in isn't already added
+	 *
+	 * @param clazz
+	 *            type of interceptor to check for
+	 */
+	private void assertNotAdded(Class<? extends CommandInterceptor> clazz) {
+		if (containsInterceptorType(clazz))
+			throw new CacheConfigurationException("Detected interceptor of type [" + clazz.getName()
+					+ "] being added to the interceptor chain " + System.identityHashCode(this) + " more than once!");
+	}
+
 	/**
 	 * Inserts the given interceptor at the specified position in the chain (o
 	 * based indexing).

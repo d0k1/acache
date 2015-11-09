@@ -1,5 +1,5 @@
 package com.focusit.acache.interceptors;
 
-public class NotificationInterceptor {
+public class NotificationInterceptor extends CommandInterceptor {
 
 }

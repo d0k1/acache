@@ -1,5 +1,6 @@
 package com.focusit.acache.configuration.region;
 
+import com.focusit.acache.configuration.CacheConfiguration;
 import com.focusit.acache.configuration.region.bounds.BoundsConfiguration;
 import com.focusit.acache.configuration.region.locking.LockingConfiguration;
 import com.focusit.acache.configuration.region.transaction.TransactionConfiguration;
@@ -49,4 +50,7 @@ public class RegionConfiguration {
 		this.concurrencyLevel = concurrencyLevel;
 	}
 
+	public CacheConfiguration global(){
+		return CacheConfiguration.get();
+	}
 }

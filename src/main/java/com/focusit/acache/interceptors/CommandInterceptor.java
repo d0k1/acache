@@ -6,13 +6,14 @@ import org.slf4j.LoggerFactory;
 import com.focusit.acache.commands.AbstractVisitor;
 import com.focusit.acache.commands.VisitableCommand;
 import com.focusit.acache.configuration.CacheConfiguration;
+import com.focusit.acache.configuration.region.RegionConfiguration;
 import com.focusit.acache.context.InvocationContext;
 
 public class CommandInterceptor extends AbstractVisitor {
 
 	private CommandInterceptor next;
 
-	protected CacheConfiguration cacheConfiguration;
+	protected RegionConfiguration cacheConfiguration;
 
 	private static final Logger log = LoggerFactory.getLogger(CommandInterceptor.class);
 
@@ -20,7 +21,7 @@ public class CommandInterceptor extends AbstractVisitor {
 		return log;
 	}
 
-	public void inject(CacheConfiguration configuration) {
+	public void inject(RegionConfiguration configuration) {
 		this.cacheConfiguration = configuration;
 	}
 

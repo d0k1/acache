@@ -10,6 +10,8 @@ import java.util.concurrent.ThreadFactory;
 import com.focusit.acache.Cache;
 import com.focusit.acache.configuration.CacheConfiguration;
 import com.focusit.acache.equivalence.AnyEquivalence;
+import com.focusit.acache.registry.CacheRegistry;
+import com.focusit.acache.registry.RegionRegistry;
 import com.focusit.acache.util.DefaultTimeService;
 import com.focusit.acache.util.TimeService;
 import com.focusit.acache.util.concurrent.locks.LockManager;
@@ -27,17 +29,16 @@ import com.focusit.acache.util.concurrent.locks.impl.StripedLockContainer;
  */
 public class CacheImpl<K, V> implements Cache<K, V> {
 
-	private LockManager lockManager;
-	private LockContainer lockContainer;
-
-	private TimeService timeService = new DefaultTimeService();
-	private ScheduledExecutorService timeoutExecutorService = new ScheduledThreadPoolExecutor(1);
-
-	private String regionName;
+	private final String regionName;
+	private final RegionRegistry registry;
 	
 	public CacheImpl(String regionName) {
-		super();
 		this.regionName = regionName;
+		registry = CacheRegistry.get().getRegionRegistry(regionName);
+		
+		if(registry == null) {
+			throw new IllegalArgumentException("Region registry can't be null");
+		}
 	}
 
 	@Override
@@ -128,27 +129,13 @@ public class CacheImpl<K, V> implements Cache<K, V> {
 	}
 
 	public void inject() {
-		timeService = new DefaultTimeService();
-		timeoutExecutorService = new ScheduledThreadPoolExecutor(1, new ThreadFactory() {
+	}
 
-			@Override
-			public Thread newThread(Runnable r) {
-				Thread thread = new Thread(r);
-				thread.setDaemon(true);
-				return null;
-			}
-		});
+	public String getRegionName() {
+		return regionName;
+	}
 
-		lockManager = new DefaultLockManager();
-		
-		if (getCacheConfiguration().region(regionName).isStripedLocks()) {
-			lockContainer = new PerKeyLockContainer(CacheConfiguration.configuration().region(regionName).getConcurrencyLevel(), AnyEquivalence.getInstance());
-			((PerKeyLockContainer) lockContainer).inject(timeService);
-		} else {
-			lockContainer = new StripedLockContainer(CacheConfiguration.configuration().region(regionName).getConcurrencyLevel(), AnyEquivalence.getInstance());
-			((StripedLockContainer) lockContainer).inject(timeService);
-		}
-		((DefaultLockManager) lockManager).inject(lockContainer, timeoutExecutorService);
-
+	public RegionRegistry getRegistry() {
+		return registry;
 	}
 }
