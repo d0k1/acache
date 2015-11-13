@@ -32,3 +32,7 @@ Then, add dependecy
 ```
 
 If you want you may see build logs here https://jitpack.io/com/github/d0k1/acache/0.1/build.log
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/d0k1/acache/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
