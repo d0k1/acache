@@ -1,11 +1,7 @@
 package com.focusit.acache.context;
 
-import com.focusit.acache.equivalence.AnyEquivalence;
+public interface InvocationContextFactory {
 
-public class InvocationContextFactory {
+	InvocationContext buildContext(boolean isWrite, int keyCount);
 
-	public InvocationContext buildContext(boolean isWrite, int keyCount) {
-		SingleKeyNonTxInvocationContext ctx = new SingleKeyNonTxInvocationContext(AnyEquivalence.getInstance());
-		return ctx;
-	}
 }

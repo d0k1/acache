@@ -14,6 +14,6 @@ public class ExAC01 {
 		cfg.buildRegions();
 		
 		CacheImpl<String, String> cache = new CacheImpl<>(REGION);
-		cache.inject();
+		cache.put("1", "2");
 	}
 }

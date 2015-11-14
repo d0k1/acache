@@ -4,8 +4,12 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 
+import com.focusit.acache.commands.CommandsFactory;
+import com.focusit.acache.commands.CommandsFactoryImpl;
 import com.focusit.acache.configuration.CacheConfiguration;
 import com.focusit.acache.configuration.region.RegionConfiguration;
+import com.focusit.acache.context.InvocationContextFactory;
+import com.focusit.acache.context.SingleNonTxInvocationContextFactoryImpl;
 import com.focusit.acache.equivalence.AnyEquivalence;
 import com.focusit.acache.interceptors.InterceptorChain;
 import com.focusit.acache.interceptors.InterceptorChainFactory;
@@ -21,6 +25,8 @@ public class RegionRegistry {
 	private final LockContainer lockContainer;
 	private final RegionConfiguration configuration;
 	private final InterceptorChain invocationChain;
+	private final CommandsFactory commandFactory;
+	private final InvocationContextFactory invocationContextFactory;
 	private final ScheduledExecutorService timeoutExecutorService = new ScheduledThreadPoolExecutor(1, new ThreadFactory() {
 
 		@Override
@@ -44,6 +50,9 @@ public class RegionRegistry {
 			((StripedLockContainer) lockContainer).inject(global().getTimeService());
 		}
 		((DefaultLockManager) lockManager).inject(lockContainer, timeoutExecutorService);
+		
+		commandFactory = new CommandsFactoryImpl();
+		invocationContextFactory = new SingleNonTxInvocationContextFactoryImpl();
 	}
 
 	public RegionConfiguration getConfiguration() {
@@ -60,5 +69,13 @@ public class RegionRegistry {
 
 	public ScheduledExecutorService getTimeoutExecutorService() {
 		return timeoutExecutorService;
+	}
+
+	public CommandsFactory getCommandFactory() {
+		return commandFactory;
+	}
+
+	public InvocationContextFactory getInvocationContextFactory() {
+		return invocationContextFactory;
 	}
 }

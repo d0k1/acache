@@ -8,7 +8,10 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 
 import com.focusit.acache.Cache;
+import com.focusit.acache.commands.read.GetKeyValueCommand;
+import com.focusit.acache.commands.write.PutKeyValueCommand;
 import com.focusit.acache.configuration.CacheConfiguration;
+import com.focusit.acache.context.InvocationContext;
 import com.focusit.acache.equivalence.AnyEquivalence;
 import com.focusit.acache.registry.CacheRegistry;
 import com.focusit.acache.registry.RegionRegistry;
@@ -76,14 +79,22 @@ public class CacheImpl<K, V> implements Cache<K, V> {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public V get(Object key) {
-		return null;
+		GetKeyValueCommand cmd = getRegistry().getCommandFactory().buildGetKeyValueCommand(key);
+		InvocationContext ctx = getRegistry().getInvocationContextFactory().buildContext(false, 1);
+		Object result = getRegistry().getInvocationChain().invoke(ctx, cmd);
+		return (V) result;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public V put(K key, V value) {
-		return null;
+		PutKeyValueCommand cmd = getRegistry().getCommandFactory().buildPutKeyValueCommand(key, value, null);
+		InvocationContext ctx = getRegistry().getInvocationContextFactory().buildContext(false, 1);
+		Object result = getRegistry().getInvocationChain().invoke(ctx, cmd);
+		return (V) result;
 	}
 
 	@Override
@@ -126,9 +137,6 @@ public class CacheImpl<K, V> implements Cache<K, V> {
 
 	@Override
 	public void clear() {
-	}
-
-	public void inject() {
 	}
 
 	public String getRegionName() {
