@@ -9,20 +9,17 @@ public class AbstractVisitor implements Visitor {
 
 	@Override
 	public Object visitPutKeyValueCommand(InvocationContext ctx, PutKeyValueCommand command) throws Throwable {
-		// TODO Auto-generated method stub
-		return null;
+		return handleDefault(ctx, command);
 	}
 
 	@Override
 	public Object visitSizeCommand(InvocationContext ctx, SizeCommand command) throws Throwable {
-		// TODO Auto-generated method stub
-		return null;
+		return handleDefault(ctx, command);
 	}
 
 	@Override
 	public Object visitGetKeyValueCommand(InvocationContext ctx, GetKeyValueCommand command) throws Throwable {
-		// TODO Auto-generated method stub
-		return null;
+		return handleDefault(ctx, command);
 	}
 
 	/**

@@ -39,12 +39,6 @@ public interface EntryFactory {
    CacheEntry wrapEntryForReading(InvocationContext ctx, Object key, CacheEntry existing);
 
    /**
-    * Used for wrapping Delta entry to be applied to DeltaAware object stored in cache. The wrapped
-    * entry is added to the supplied InvocationContext.
-    */
-   CacheEntry wrapEntryForDelta(InvocationContext ctx, Object deltaKey, Delta delta);
-
-   /**
     * Insert an entry that exists in the data container into the context.
     *
     * Doesn't do anything if the key was already wrapped.
@@ -52,7 +46,7 @@ public interface EntryFactory {
     * @return The wrapped entry.
     * @since 8.1
     */
-   MVCCEntry wrapEntryForWriting(InvocationContext ctx, Object key, Wrap wrap, boolean skipRead,
+   MVCCEntry wrapEntryForPut(InvocationContext ctx, Object key, Wrap wrap, boolean skipRead,
                                  boolean ignoreOwnership);
 
    /**

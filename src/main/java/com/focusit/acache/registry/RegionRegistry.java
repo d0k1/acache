@@ -8,8 +8,16 @@ import com.focusit.acache.commands.CommandsFactory;
 import com.focusit.acache.commands.CommandsFactoryImpl;
 import com.focusit.acache.configuration.CacheConfiguration;
 import com.focusit.acache.configuration.region.RegionConfiguration;
+import com.focusit.acache.configuration.region.transaction.TransactionConfiguration.TxMode;
+import com.focusit.acache.container.DataContainer;
+import com.focusit.acache.container.DefaultDataContainer;
+import com.focusit.acache.container.EntryFactory;
+import com.focusit.acache.container.EntryFactoryImpl;
+import com.focusit.acache.container.IncrementalVersionableEntryFactoryImpl;
+import com.focusit.acache.container.InternalEntryFactory;
+import com.focusit.acache.container.InternalEntryFactoryImpl;
 import com.focusit.acache.context.InvocationContextFactory;
-import com.focusit.acache.context.SingleNonTxInvocationContextFactoryImpl;
+import com.focusit.acache.context.SingleKeyNonTxInvocationContextFactoryImpl;
 import com.focusit.acache.equivalence.AnyEquivalence;
 import com.focusit.acache.interceptors.InterceptorChain;
 import com.focusit.acache.interceptors.InterceptorChainFactory;
@@ -27,6 +35,11 @@ public class RegionRegistry {
 	private final InterceptorChain invocationChain;
 	private final CommandsFactory commandFactory;
 	private final InvocationContextFactory invocationContextFactory;
+	private final EntryFactory entryFactory;
+	@SuppressWarnings("rawtypes")
+	private final DataContainer container;
+	private final InternalEntryFactory internalEntryFactory;
+	
 	private final ScheduledExecutorService timeoutExecutorService = new ScheduledThreadPoolExecutor(1, new ThreadFactory() {
 
 		@Override
@@ -37,6 +50,7 @@ public class RegionRegistry {
 		}
 	});
 
+	@SuppressWarnings("rawtypes")
 	public RegionRegistry(RegionConfiguration configuration) {
 		this.configuration = configuration;
 		this.invocationChain = new InterceptorChainFactory().buildInterceptorChain(getConfiguration());
@@ -52,7 +66,17 @@ public class RegionRegistry {
 		((DefaultLockManager) lockManager).inject(lockContainer, timeoutExecutorService);
 		
 		commandFactory = new CommandsFactoryImpl();
-		invocationContextFactory = new SingleNonTxInvocationContextFactoryImpl();
+		invocationContextFactory = new SingleKeyNonTxInvocationContextFactoryImpl();
+		
+		if(configuration.isUseVersioning()){
+			entryFactory = new IncrementalVersionableEntryFactoryImpl();
+		} else {
+			entryFactory = new EntryFactoryImpl(this);
+		}
+
+		internalEntryFactory = new InternalEntryFactoryImpl();
+		container = new DefaultDataContainer<>();
+		((DefaultDataContainer)container).inject(CacheRegistry.get().getTimeService(), internalEntryFactory);
 	}
 
 	public RegionConfiguration getConfiguration() {
@@ -77,5 +101,13 @@ public class RegionRegistry {
 
 	public InvocationContextFactory getInvocationContextFactory() {
 		return invocationContextFactory;
+	}
+
+	public EntryFactory getEntryFactory() {
+		return entryFactory;
+	}
+
+	public DataContainer getContainer() {
+		return container;
 	}
 }

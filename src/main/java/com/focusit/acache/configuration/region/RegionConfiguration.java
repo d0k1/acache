@@ -13,6 +13,8 @@ public class RegionConfiguration {
 
 	private boolean stripedLocks = false;
 	private int concurrencyLevel = 16;
+	
+	private boolean useVersioning = false;
 
 	public RegionConfiguration(String name) {
 		this.name = name;
@@ -52,5 +54,13 @@ public class RegionConfiguration {
 
 	public CacheConfiguration global(){
 		return CacheConfiguration.get();
+	}
+
+	public boolean isUseVersioning() {
+		return useVersioning;
+	}
+
+	public void setUseVersioning(boolean useVersioning) {
+		this.useVersioning = useVersioning;
 	}
 }

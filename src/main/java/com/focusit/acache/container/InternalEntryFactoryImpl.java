@@ -26,6 +26,7 @@ public class InternalEntryFactoryImpl implements InternalEntryFactory {
 		this.timeService = timeService;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public InternalCacheEntry create(Object key, Object value, Metadata metadata) {
 		if (!isStoreMetadata(metadata)) {

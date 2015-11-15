@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import com.focusit.acache.configuration.CacheConfiguration;
 import com.focusit.acache.configuration.region.RegionConfiguration;
 import com.focusit.acache.interceptors.locking.NonTransactionalLockingInterceptor;
+import com.focusit.acache.registry.CacheRegistry;
+import com.focusit.acache.registry.RegionRegistry;
 
 /**
  * Factory class that builds an interceptor chain based on cache configuration.
@@ -27,26 +29,29 @@ public class InterceptorChainFactory {
 		InterceptorChain chain = new InterceptorChain();
 		CommandInterceptor interceptor = new CacheMgmtInterceptor();
 		CommandInterceptor next = null;
-		interceptor.inject(configuration);
+		
+		RegionRegistry registry = CacheRegistry.get().getRegionRegistry(configuration.getName());
+		
+		interceptor.inject(registry);
 		chain.setFirstInChain(interceptor);
 
 		next = new NotificationInterceptor();
-		next.inject(configuration);
+		next.inject(registry);
 		interceptor.setNext(next);
 		interceptor = next;
 
 		next = new NonTransactionalLockingInterceptor();
-		next.inject(configuration);
+		next.inject(registry);
 		interceptor.setNext(next);
 		interceptor = next;
 
 		next = new EntryWrappingInterceptor();
-		next.inject(configuration);
+		next.inject(registry);
 		interceptor.setNext(next);
 		interceptor = next;
 
 		next = new CallInterceptor();
-		next.inject(configuration);
+		next.inject(registry);
 		interceptor.setNext(next);
 
 		if (log.isDebugEnabled()) {

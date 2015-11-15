@@ -4,9 +4,9 @@ import com.focusit.acache.configuration.region.RegionConfiguration;
 
 public class BoundsConfiguration {
 	private final RegionConfiguration region;
-	private long lifespan;
-	private long maxIdle;
-	private long capacity;
+	private long lifespan = -1;
+	private long maxIdle = -1;
+	private long capacity = -1;
 
 	public BoundsConfiguration(RegionConfiguration region) {
 		super();

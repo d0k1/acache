@@ -13,7 +13,7 @@ public class LockingConfiguration {
 	}
 
 	public static enum LockMode {
-		Optimistic,  OptimisticVersioned, Pessimistic;
+		Optimistic, Pessimistic;
 	}
 
 	public boolean isStripped() {
