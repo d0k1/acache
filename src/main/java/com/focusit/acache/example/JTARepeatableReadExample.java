@@ -57,10 +57,10 @@ public class JTARepeatableReadExample {
 
         new TransactionRunner(txManager).runWithNew(() -> {
             dirs.forEach(dir -> {
-                treeCache.put(dir, "type", "directory");
+                treeCache.getRoot().addChild(Fqn.fromString(dir)).put("type", "directory");
             });
             files.forEach(file -> {
-                treeCache.put(file, "type", "file");
+                treeCache.getRoot().addChild(Fqn.fromString(file)).put("type", "file");
             });
         });
 

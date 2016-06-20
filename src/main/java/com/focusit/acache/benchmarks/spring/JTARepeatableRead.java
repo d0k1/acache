@@ -29,12 +29,20 @@ public class JTARepeatableRead {
     @State(Scope.Benchmark)
     public static class SpringState {
         public final ApplicationContext ctx;
+        public PlatformTransactionManager txManager;
+
         public DefaultCacheManager manager;
         public TreeCache<Object, Object> treeCache;
         public Cache<Object, Object> cache;
-        public PlatformTransactionManager txManager;
+
+        public TreeCache<Object, Object> treeCache1;
+        public Cache<Object, Object> cache1;
+
         public List<String> dirs = new ArrayList<>();
         public List<String> files = new ArrayList<>();
+
+        public List<String> shuffledDirs = new ArrayList<>();
+        public List<String> shuffledFiles = new ArrayList<>();
 
         public SpringState() {
             ctx = new AnnotationConfigApplicationContext(JBossTAConfig.class);
@@ -52,7 +60,14 @@ public class JTARepeatableRead {
             treeCache = new TreeCacheFactory().createTreeCache(cache);
             treeCache.start();
 
-            //org.apache.log4j.Logger.getRootLogger().setLevel(org.apache.log4j.Level.OFF);
+            cache1 = manager.getCache("global1");
+            treeCache1 = new TreeCacheFactory().createTreeCache(cache1);
+            treeCache1.start();
+
+            new TransactionRunner(txManager).runWithNew(() -> {
+                dirs.forEach(dir -> treeCache.getRoot().addChild(Fqn.fromString(dir)).put("type", "directory"));
+                files.forEach(file -> treeCache.getRoot().addChild(Fqn.fromString(file)).put("type", "file"));
+            });
         }
 
         @Setup
@@ -69,19 +84,36 @@ public class JTARepeatableRead {
     @Warmup(iterations = 5)
     @Measurement(iterations = 20, timeUnit = TimeUnit.SECONDS)
     @Fork(value = 1)
-    @Threads(2)
-    public void bulkLoad(SpringState state, Blackhole bh) {
+    @Threads(1)
+    public void bulkNodesLoad(SpringState state, Blackhole bh) {
         new TransactionRunner(state.txManager).runWithNew(() -> {
-            state.dirs.forEach(dir -> {
-                state.treeCache.put(dir, "type", "directory");
-            });
-            state.files.forEach(file -> {
-                state.treeCache.put(file, "type", "file");
-            });
+            state.dirs.forEach(dir -> bh.consume(state.treeCache.getRoot().addChild(Fqn.fromString(dir)).put("type", "directory")));
+            state.files.forEach(file -> bh.consume(state.treeCache.getRoot().addChild(Fqn.fromString(file)).put("type", "file")));
         });
 
         Object result = new TransactionRunner(state.txManager).callWithNew(() -> state.treeCache.getNode(Fqn.fromString("/home/doki/source/jdk8u-dev")).getChildren());
 
         bh.consume(result);
+    }
+
+    @Benchmark
+    @Warmup(iterations = 5)
+    @Measurement(iterations = 20, timeUnit = TimeUnit.SECONDS)
+    @Fork(value = 1)
+    @Threads(1)
+    public void bulkNodeRead(SpringState state, Blackhole bh) {
+        bh.consume(new TransactionRunner(state.txManager).callWithNew(() -> {
+                    final int[] i = {0};
+                    state.shuffledDirs.forEach(dir -> {
+                        i[0]++;
+                        bh.consume(state.treeCache.getRoot().getChild(dir).get("type"));
+                    });
+                    state.shuffledFiles.forEach(file -> {
+                        i[0]++;
+                        state.treeCache.put(file, "type", "file");
+                    });
+                    return i[0];
+                })
+        );
     }
 }
